@@ -1,0 +1,10 @@
+---
+# tasks file for puppet
+- name: Role de instalacao puppet
+  hosts: all
+  vars:
+    - texto: "Instalacao Funcionou"
+  tasks:
+    - include: prerequisitos.yml
+    - include: install_centos.yml
+    - include: install_ubunto.yml

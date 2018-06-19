@@ -1,0 +1,9 @@
+    - name: Obtendo pacote puppet Ubunto
+      get_url:
+        url: https://apt.puppetlabs.com/puppet5-release-xenial.deb
+        dest: /root
+    
+    - name: Install Centos
+      get_url:
+        url: https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
+        dest: /root

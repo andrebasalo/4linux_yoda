@@ -1,0 +1,8 @@
+    - name: Instalando no Ubunto
+      apt: deb=puppet5-release-xenial.deb state=present update_cache=yes
+      dpkg_options: 'force-confold,force-confdef'
+      when: ansible_os_family == "Debian"
+
+    - name: Instalando o puppet-agent
+      apt: name=puppet-agent
+      when: ansible_os_family == "Debian"

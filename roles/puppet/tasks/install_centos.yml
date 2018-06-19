@@ -1,0 +1,9 @@
+    - name: Instalando no Centos
+      yum: name=puppet5-release-el-7.noarch.rpm state=present 
+      dpkg_options: 'force-confold,force-confdef'
+      when: ansible_os_family == "RedHat"
+
+    - name: Instalando o puppet-agent
+      yum: name=puppet-agent
+      when: ansible_os_family == "RedHat"
+

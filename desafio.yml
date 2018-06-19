@@ -1,0 +1,85 @@
+---
+- name: Playbook desafio
+  hosts: all
+  tasks:
+
+  - name: Removendo pacote NGINX - UBUNTO
+    apt:
+      name: "{{ item }}"
+      state: absent
+      update_cache: yes
+    with_items:
+    - "nginx"
+    notify: stop
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Removendo pacote NGINX - CENTOS
+    yum:
+      name: "{{ item }}"
+      state: absent
+    with_items:
+    - "nginx"
+    notify: stop
+    when: ansible_distribution == "CentOS"
+
+  - name: Instalando Pacotes - UBUNTO
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+    - "apache2"
+    - "libapache2-mod-php7.0"
+    - "php7.0"
+    notify: apache
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Instalando PACOTES - CENTOS
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - "epel-release"
+    - "httpd"
+    - "php"
+    notify: apache
+    when: ansible_distribution == "CentOS"
+    notify: apache
+
+  - name: Garantindo o hosts
+    lineinfile:
+      path: /etc/hosts
+      create: yes
+      line: "{{ item }}"
+    with_items:
+    - "192.168.99.10 devops.salas4linux.com.br devops"
+    - "192.168.99.20 docker.salas4linux.com.br docker"
+    - "192.168.99.30 automation.salas4linux.com.br automation"
+
+
+  - name: Verificando Memoria
+    command: a2enmod php7.0
+    when: ansible_distribution == "Ubuntu"
+
+
+  - name: Enviando Arquivo
+    copy:
+      src: index.php
+      dest: /var/www/html/index/php
+
+
+  handlers:
+  - name: stop
+    service:
+      name: nginx
+      state: stop
+
+  - name: apache
+    service:
+      name: apache2 httpd
+      state: restarted
+   
+
+
+
+
